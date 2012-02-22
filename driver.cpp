@@ -222,12 +222,12 @@ float Driver::getAllowedSpeed(tTrackSeg *segment)
         if(arc < 0)
             arc = -arc;
 
-        if(arc > M_PI/2.5)
-            arc = M_PI/2.5;
+        if(arc > M_PI/2)
+            arc = M_PI/2;
 
         float mu = segment->surface->kFriction*TIREMU*MU_FACTOR;
         //float car_width = car->_dimension_x* (float)sin(angle) + car->_dimension_y* (float)cos(angle);
-        float seg_width = (segment->width)/((1+tan(arc/2))*WIDTHDIV);
+        float seg_width = (segment->width)/((1+tan(arc/4))*WIDTHDIV);
         float r = (2*segment->radius*segment->radius*(1 - cos(arc/2)) - 2*seg_width*segment->radius*(1 - cos(arc/2)) + seg_width*seg_width)/(2*(segment->radius*(1-cos(arc/2)) - seg_width));
         //printf("Arc: %f, seg->radius: %f, seg->width: %f, new_width: %f, R: %f\n", arc*180/M_PI, segment->radius, segment->width, seg_width, r);
         if(r <= 0)
