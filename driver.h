@@ -14,8 +14,12 @@
 #include <robot.h>
 
 #include "linalg.h"
+#include "learning.h"
+#include "trajectory.h"
 
-#include "opponent.h"
+
+namespace kartik_ns
+{
 class Opponents;
 class Opponent;
 
@@ -31,15 +35,15 @@ class Driver
         void drive(tSituation *s);
         int pitCommand(tSituation *s);
         void endRace(tSituation *s);
-        tCarElt *getCarPtr() { return car; }
-        tTrack *getTrackPtr() { return track; }
-        float getSpeed() { return speed; }
+        tCarElt *getCarPtr() { return car_; }
+        tTrack *getTrackPtr() { return track_; }
+        float getSpeed() { return speed_; }
 
     private:
         /* utility functions */
         bool isStuck();
         void update(tSituation *s);
-        float getAllowedSpeed(tTrackSeg *segment);
+        float getAllowedSpeed(tTrackSeg *segment, bool add_to_data = false);
         float getAccel();
         float getDistToSegEnd();
         float getBrake();
@@ -59,26 +63,36 @@ class Driver
         v2d getTargetPoint();
         float filterTrk(float accel);
         float filterBColl(float brake);
+        void updateAllowedSpeedFactor();
 
         /* per robot global data */
-        int stuck;
-        float trackangle;
-        float angle;
-        float speedangle;   /* the angle of the speed vector relative to trackangle, > 0.0 points to right */
-        float mass;         /* mass of car + fuel */
-        float oldlookahead;
-        float clutchtime;   ///< Clutch timer.
-        float speed;    /* speed in track direction */
-        Opponents *opponents;
-        Opponent *opponent;
+        int stuck_;
+        float trackangle_;
+        float angle_;
+        float speedangle_;   /* the angle of the speed vector relative to trackangle, > 0.0 points to right */
+        float mass_;         /* mass of car + fuel */
+        float oldlookahead_;
+        float clutchtime_;   ///< Clutch timer.
+        float speed_;    /* speed in track direction */
+        Opponents *opponents_;
+        Opponent *opponent_;
+        tdble prev_accel_cmd_;
+        tdble prev_brake_cmd_;
+        tTrackSeg *prev_seg_;
 
         /* track variables */
-        tTrack* track;
+        tTrack* track_;
+        Track track_info_, best_track_info_;
+        TrainingData fann_data_;
+        bool save_learned_;
+        bool update_learned_;
+        double prev_best_lap_time_;
+        Trajectory traj_;
 
         /* data that should stay constant after first initialization */
         int MAX_UNSTUCK_COUNT;
         int INDEX;
-        tCarElt *car;   /* pointer to tCarElt struct */
+        tCarElt *car_;   /* pointer to tCarElt struct */
         float CARMASS;  /* mass of the car only */
         float CA;       /* aerodynamic downforce coefficient */
         float CW;       /* aerodynamic drag coefficient */
@@ -109,6 +123,8 @@ class Driver
         static const float STEER_DIRECTION_GAIN;
         static const float STEER_DRIFT_GAIN;
         static const float STEER_PREDICT_GAIN;
+        static const float STEER_AVOIDANCE_GAIN;
 };
+}
 
 #endif // _DRIVER_H_

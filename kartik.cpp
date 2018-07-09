@@ -36,6 +36,8 @@
 #define BUFSIZE 20
 #define NBOTS   2
 
+using namespace kartik_ns;
+
 static char     *botname[NBOTS];
 static Driver   *driver[NBOTS];
 
@@ -47,6 +49,7 @@ static void endrace(int index, tCarElt *car, tSituation *s);
 static void shutdown(int index);
 static int  InitFuncPt(int index, void *pt);
 
+
 /*
  * Module entry point
  */
@@ -56,14 +59,14 @@ kartik(tModInfo *modInfo)
     char buffer[BUFSIZE];
     int i;
 
-    memset(modInfo, 0, 10*sizeof(tModInfo));
+    memset(modInfo, 0, NBOTS*sizeof(tModInfo));
 
     for (i = 0; i < NBOTS; i++)
     {
         sprintf(buffer, "kartik %d", i+1);
         botname[i]          = strdup(buffer);
-        modInfo[i].name     = botname[i];       /* name of the module (short) */
-        modInfo[i].desc     = (char*)"";               /* description of the module (can be long) */
+        modInfo[i].name     = strdup(botname[i]);       /* name of the module (short) */
+        modInfo[i].desc     = strdup(botname[i]);      /* description of the module (can be long) */
         modInfo[i].fctInit  = InitFuncPt;       /* init function */
         modInfo[i].gfId     = ROB_IDENT;        /* supported framework version */
         modInfo[i].index    = i;
@@ -132,4 +135,3 @@ shutdown(int index)
     free(botname[index]);
     delete driver[index];
 }
-

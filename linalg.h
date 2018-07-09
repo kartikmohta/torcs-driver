@@ -16,9 +16,11 @@
  *   (at your option) any later version.                                   *
  *                                                                         *
  ***************************************************************************/
- 
+
 #ifndef _LINALG_H_
 #define _LINALG_H_
+
+#include <cmath>
 
 class v2d {
 	public:
@@ -111,7 +113,7 @@ inline float v2d::cosalpha(const v2d &p2, const v2d &c) const
 inline v2d v2d::rotate(const v2d &c, float arc) const
 {
 	v2d d = *this-c;
-	float sina = (float) sin(arc), cosa = (float) cos(arc);
+	float sina = std::sin(arc), cosa = std::cos(arc);
 	return c + v2d(d.x*cosa-d.y*sina, d.x*sina+d.y*cosa);
 }
 
@@ -125,7 +127,7 @@ inline float v2d::len(void) const
 
 /* distance between *this and p */
 inline float v2d::dist(const v2d &p) const
-{ 
+{
 	return (float) sqrt((p.x-x)*(p.x-x)+(p.y-y)*(p.y-y));
 }
 
@@ -149,7 +151,7 @@ class Straight {
 
         /* methods */
         v2d intersect(const Straight &s) const;
-        float dist(const v2d &p) const; 
+        float dist(const v2d &p) const;
 
         /* data */
         v2d p;          /* point on the straight */
@@ -161,7 +163,7 @@ class Straight {
 inline v2d Straight::intersect(const Straight &s) const
 {
     float t = -(d.x*(s.p.y-p.y)+d.y*(p.x-s.p.x))/(d.x*s.d.y-d.y*s.d.x);
-    return s.p + s.d*t;  
+    return s.p + s.d*t;
 }
 
 

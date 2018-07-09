@@ -24,6 +24,8 @@
 
 class Driver;
 
+namespace kartik_ns
+{
 /* Opponent maintains the data for one opponent */
 class Opponent {
     public:
@@ -79,7 +81,6 @@ class Opponents {
         Opponent *opponent;
         int nopponents;
 };
-
+}
 
 #endif // _OPPONENT_H_
-

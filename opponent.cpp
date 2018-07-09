@@ -1,5 +1,7 @@
 #include "opponent.h"
 
+namespace kartik_ns
+{
 /* class variables and constants */
 tTrack* Opponent::track;
 float Opponent::FRONTCOLLDIST = 200.0;  /* [m] distance to check for other cars */
@@ -120,4 +122,4 @@ void Opponents::update(tSituation *s, Driver *driver)
         opponent[i].update(s, driver);
     }
 }
-
+}

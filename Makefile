@@ -16,7 +16,7 @@
 ROBOT       = kartik
 MODULE      = ${ROBOT}.so
 MODULEDIR   = drivers/${ROBOT}
-SOURCES     = ${ROBOT}.cpp driver.cpp opponent.cpp
+SOURCES     = ${ROBOT}.cpp driver.cpp opponent.cpp learning.cpp trajectory.cpp
 
 SHIPDIR     = drivers/${ROBOT}
 SHIP        = ${ROBOT}.xml logo.rgb
