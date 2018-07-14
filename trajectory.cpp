@@ -104,13 +104,9 @@ void Trajectory::processTrack(tTrack const *trk, tdble min_alpha,
       //printf("g: %f\n", g);
       //printf("g_min: %f\n", g_min);
       //printf("std::abs(g_min / g): %f\n", std::abs(g_min / g));
-      if(std::abs(g) > 0 && std::abs(g_min / g) > 1e-3)
+      if(std::abs(g) > 0)// && std::abs(g_min / g) > 1e-3)
       {
-        double delta = 0.001 * (g_min / g);
-        double delta_mag = std::abs(delta);
-        double delta_sign = delta / delta_mag;
-        alpha -= delta_sign * delta_mag;
-        // alpha_list[idx1] -= delta_sign * 1e-2;
+        alpha -= 0.001 * (g_min / g);
       }
       else
         break;
